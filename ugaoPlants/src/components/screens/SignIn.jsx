@@ -28,6 +28,7 @@ function SignIn() {
 
    const handleSubmit = async  (e) => {
       e.preventDefault()
+      const datajson = JSON.stringify(data);
       const  dataResponse = await fetch(SummaryApi.signIn.url, 
         {
           method : SummaryApi.signIn.method,
@@ -35,7 +36,7 @@ function SignIn() {
         headers : {
           "content-type" : "application/json"
         },
-        body : JSON.stringify(data)
+        body : datajson
         }
       )
       const dataApi = await dataResponse.json()

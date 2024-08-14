@@ -94,6 +94,14 @@ const SummaryApi = {
   aboutImage:{
     url:`${backendDomin}/api/about-imageuplode/66a9fbd216fd1f2fb0b16482`,
     method:'post'
+  },
+  aboutImage1:{
+    url:`${backendDomin}/api/about-imageuplode/66a9fbd216fd1f2fb0b16482`,
+    method:'get'
+  },
+  viewcartproduct:{
+    url:`${backendDomin}/api/view-card-product`,
+    method:'get'
   }
 };
 

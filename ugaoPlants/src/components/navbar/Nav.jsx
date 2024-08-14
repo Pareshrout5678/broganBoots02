@@ -32,7 +32,7 @@ function Nav() {
   const URLSearch = new URLSearchParams(searchInput?.search);
   const searchQuery = URLSearch.getAll("q");
   const [search, setSearch] = useState(searchQuery);
-
+  console.log(user)
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
       method: SummaryApi.logout_user.method,

@@ -17,7 +17,8 @@ const Cart = ({ show, toggleOffcanvas, context }) => {
   const dispatch = useDispatch()
   const countProduct=useSelector((state) => state.counter.value)
 
- 
+  const [contextdata,setContextdata] = useState(context)
+
 
   const fetchData = async () => {
     const response = await fetch(SummaryApi.addToCartProductView.url, {
@@ -39,11 +40,14 @@ const Cart = ({ show, toggleOffcanvas, context }) => {
     await fetchData();
   };
 
+
   useEffect(() => {
+
     setLoading(true);
     handleLoading();
     setLoading(false);
-  }, []);
+    fetchData()
+  }, [toggleOffcanvas]);
 
   // const increaseQty = async (id, qty) => {
   //   const response = await fetch(SummaryApi.updateCartProduct.url, {
@@ -119,6 +123,7 @@ const Cart = ({ show, toggleOffcanvas, context }) => {
   
 
   const deleteCartProduct = async (id) => {
+    
     const response = await fetch(SummaryApi.deleteCartProduct.url, {
       method: SummaryApi.deleteCartProduct.method,
       credentials: "include",
@@ -133,7 +138,8 @@ const Cart = ({ show, toggleOffcanvas, context }) => {
     const responseData = await response.json();
 
     if (responseData.success) {
-      fetchData();
+     await fetchData();
+       
       context2.fetchUserAddToCart();
     }
   };
@@ -195,7 +201,7 @@ const Cart = ({ show, toggleOffcanvas, context }) => {
 
                           {/* delete product */}
                           <div className="text-end" onClick={()=>deleteCartProduct(product?._id)}>
-                            <i class="fa-solid fa-trash"></i>
+                            <i className="fa-solid fa-trash"></i>
                           </div>
 
                         </div>
