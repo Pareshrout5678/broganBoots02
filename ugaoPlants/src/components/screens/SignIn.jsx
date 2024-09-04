@@ -28,17 +28,12 @@ function SignIn() {
 
    const handleSubmit = async  (e) => {
       e.preventDefault()
-      const datajson = JSON.stringify(data);
-      const  dataResponse = await fetch(SummaryApi.signIn.url, 
-        {
-          method : SummaryApi.signIn.method,
-          credentials :"include",
-        headers : {
-          "content-type" : "application/json"
-        },
-        body : datajson
-        }
-      )
+      const dataResponse = await fetch(SummaryApi.signIn.url, {
+        method: SummaryApi.signIn.method,
+        credentials: "include",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(data)
+      });
       const dataApi = await dataResponse.json()
       if(dataApi.success){
         toast.success(dataApi.message)
