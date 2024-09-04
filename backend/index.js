@@ -13,6 +13,11 @@ app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }));
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
 app.use(express.json());
 app.use(cookieParser());
 
@@ -31,7 +36,7 @@ const PORT = 8087;
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log("connect to db");
-    console.log("Server is running");
+    console.log("Server is running",PORT);
   });
 });
 
