@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import SummaryApi from "../../common/Index"
 const Payment = () => {
 
     const navigate = useNavigate();
+    const [tempdata,setTempdata] = useState([])
 
     const data = {
         name: "Vikas",
@@ -14,10 +15,35 @@ const Payment = () => {
         transactionId: "T" + Date.now(),
     };
 
+    const fetchData = async () => {
+        const response = await fetch(SummaryApi.viewcartproduct.url, {
+          method: SummaryApi.viewcartproduct.method,
+          credentials: "include",
+          headers: {
+            "content-type": "application/json",
+          },
+       
+        });
+    
+        const responseData = await response.json();
+    
+        if (responseData.success) {
+          setTempdata(responseData.data[0].productId);
+          
+          
+        }
+        console.log(tempdata)
+      };
+
+      useEffect(()=>{
+        fetchData()
+        
+      },[])
+    
     const handlePayment = async (e) => {
         e.preventDefault();
 
-        let res = await axios.post("http://localhost:8081/api/order", { ...data })
+        let res = await axios.post("http://localhost:8087/api/order", { ...data })
             .then((res) => {
                 window.location.href = res.data.url
                 if (res.data && res.data.data.instrumentResponse.redirectInfo.url) {
@@ -31,6 +57,9 @@ const Payment = () => {
                 console.error(error);
             });
     };
+
+
+
     return (
         <div className='pt-5'>
             <div className="pt-5">
@@ -144,11 +173,11 @@ const Payment = () => {
                             </div>
                             <div className="">
                                 <div className="d-flex justify-content-between">
-                                    <div>name</div>
+                                    <div>name : {tempdata?.brandName}</div>
                                 </div>
-                                <div className="text-secondary">size : </div>
+                                <div className="text-secondary">size :{tempdata?.availablesizes?.["3"]} </div>
                                 <div className="text-secondary">
-                                    category :
+                                    category : {tempdata?.category}
                                 </div>
                             </div>
 
@@ -159,7 +188,7 @@ const Payment = () => {
                             </div>
                             <div className="d-flex justify-content-between py-2">
                                 <span>SUbtotal</span>
-                                <span>10090</span>
+                                <span>{tempdata?.price}</span>
                             </div>
                             <div className="d-flex justify-content-between py-2">
                                 <span>Shipping</span>
@@ -167,7 +196,7 @@ const Payment = () => {
                             </div>
                             <div className="d-flex justify-content-between py-2 fw-bold">
                                 <span >Total</span>
-                                <span>34673</span>
+                                <span>{tempdata?.price}</span>
                             </div>
                             <div className="text-secondary my-2">incluiding in 24 rs taxes</div>
                             <button className='btn bg-color btn-primary w-100'>PAY NOW</button>

@@ -9,7 +9,15 @@ const app = express();
 const path = require('path');
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
 app.use(express.json());
 app.use(cookieParser());
 
@@ -23,12 +31,12 @@ app.get("/test", (req, res)=> {
 
 app.use("/api", router);
 
-const PORT = 8087 || process.env.PORT;
+const PORT = 8087;
 
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log("connect to db");
-    console.log("Server is running");
+    console.log("Server is running",PORT);
   });
 });
 

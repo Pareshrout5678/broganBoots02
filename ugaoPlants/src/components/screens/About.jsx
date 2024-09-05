@@ -6,24 +6,24 @@ import { toast } from 'react-toastify';
 const About = () => {
   const [data, setData] = useState([]);
   const [aboutus, setAboutus] = useState('');
-  
+  const [imageUrl ,setImageUrl] = useState("")
 
   useEffect(() => {
-    const fetchAboutus = async () => {
+    const fetchAboutUs = async () => {
       try {
-        const response = await fetch(SummaryApi.aboutImage.url); // Replace with your API endpoint
+        const response = await fetch(SummaryApi.aboutImage.url);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setAboutus(data);
-     // alert(data.image);
+  
+          setAboutus(`http://localhost:8087/${data.image}`);
       } catch (error) {
         alert(error.message);
-      } 
+      }
     };
-
-    fetchAboutus();
+    
+    fetchAboutUs();
   
   }, []);
 
@@ -43,7 +43,7 @@ const About = () => {
             <div className="text-end py-4">
 
 
-              <img src={`http://localhost:8081/${aboutus.image}`} alt="" className="img-club" />
+              <img src={aboutus} alt="aboutImg" className="img-club" style={{width:"300px",height:"300px"}}/>
             </div>
           </div>
         </div>
